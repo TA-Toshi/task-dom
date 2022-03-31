@@ -1,3 +1,5 @@
+import { count } from 'console';
+
 /*
   В функцию appendToBody передаются 3 параметра:
   tag - имя тега, content - содержимое тега и count - количество вставок.
@@ -5,6 +7,12 @@
   Считаем, что всегда передается тег, допускающий вставку текста в качестве своего содержимого (P, DIV, I и пр.).
 */
 export function appendToBody(tag, content, count) {
+    for (let i = 0; i < count; i++) {
+        const tagg = document.createElement(tag);
+        const contentt = document.createTextNode(content);
+        tagg.appendChild(contentt);
+        document.body.prepend(tagg);
+    }
 }
 
 /*
@@ -15,6 +23,17 @@ export function appendToBody(tag, content, count) {
   Сформированное дерево верните в качестве результата работы функции.
 */
 export function generateTree(childrenCount, level) {
+    function addChild(count, lev) {
+        let tagg = document.createElement('div');
+        tagg.classList = `item_${lev}`;
+        if (lev < level) {
+            for (let i = 0; i < count; i++) {
+                tagg.appendChild(addChild(childrenCount, lev + 1));
+            }
+        }
+        return tagg;
+    }
+    return addChild(childrenCount, 1);
 }
 
 /*
@@ -26,4 +45,25 @@ export function generateTree(childrenCount, level) {
   Сформированное дерево верните в качестве результата работы функции.
 */
 export function replaceNodes() {
+    function addChild(lev) {
+        let tagg = document.createElement('div');
+        tagg.classList = `item_${lev}`;
+        if (lev < 3) {
+            for (let i = 0; i < 2; i++) {
+                tagg.appendChild(addChild(lev + 1));
+            }
+        }
+        return tagg;
+    }
+    function replaceChild(elem) {
+        if (elem.className == 'item_2') {
+            let y = document.createElement('section');
+            y.classList.add('item_2');
+            y.innerHTML = elem.innerHTML;
+            elem.replaceWith(y);
+        }
+    }
+    let x = addChild(1);
+    x.childNodes.forEach(replaceChild);
+    return x;
 }
