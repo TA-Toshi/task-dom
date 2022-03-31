@@ -45,16 +45,6 @@ export function generateTree(childrenCount, level) {
   Сформированное дерево верните в качестве результата работы функции.
 */
 export function replaceNodes() {
-    function addChild(lev) {
-        let tagg = document.createElement('div');
-        tagg.classList = `item_${lev}`;
-        if (lev < 3) {
-            for (let i = 0; i < 2; i++) {
-                tagg.appendChild(addChild(lev + 1));
-            }
-        }
-        return tagg;
-    }
     function replaceChild(elem) {
         if (elem.className == 'item_2') {
             let y = document.createElement('section');
@@ -63,7 +53,7 @@ export function replaceNodes() {
             elem.replaceWith(y);
         }
     }
-    let x = addChild(1);
+    let x = generateTree(2, 3);
     x.childNodes.forEach(replaceChild);
     return x;
 }
